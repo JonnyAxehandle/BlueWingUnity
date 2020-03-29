@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 5713727952149728126}
   - component: {fileID: 5713727952149728113}
+  - component: {fileID: 7605383281921589379}
+  - component: {fileID: 4708162191226584248}
+  - component: {fileID: 646570402249393027}
   m_Layer: 0
   m_Name: Blue Wing
   m_TagString: Untagged
@@ -26,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5713727952149728112}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.324165, y: 0.324165, z: 0.324165}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -69,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: e31dee3ed4b79534ba3c6ae2008d8b22, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 41f6e1c272ac49c4ca8f60d9de2a4e5d, type: 3}
   m_Color: {r: 0, g: 0.41398382, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -80,3 +83,51 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &7605383281921589379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713727952149728112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec38ab16574d88e4fb851162dc7adb12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 10
+  bounds:
+    xMin: 0
+    xMax: 0
+    yMin: 0
+    yMax: 0
+--- !u!114 &4708162191226584248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713727952149728112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4392b50261f853748945b3b77cef81a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &646570402249393027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5713727952149728112}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d551631c9a0549b469683c67f21eed9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LaserShotPrefab: {fileID: -3009074683442541918, guid: 6216a112516be034ea70fe1dae8eb339,
+    type: 3}
+  ShotSpeed: 15
+  shotsPerBurst: 3
+  timeBetweenShots: 0.11
+  timeBetweenBursts: 0.5

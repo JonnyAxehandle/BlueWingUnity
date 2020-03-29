@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerInput))]
-public class LaserShooter : MonoBehaviour
+public class LaserShooter : MonoBehaviour , IWeaponInputTarget
 {
     [SerializeField] private FiredShot LaserShotPrefab;
     [SerializeField] private float ShotSpeed = 10;
@@ -11,60 +11,41 @@ public class LaserShooter : MonoBehaviour
     [SerializeField] private float timeBetweenShots = 0.5f;
     [SerializeField] private float timeBetweenBursts = 1;
 
-    private PlayerInput playerInput;
-
     // TODO: Find a way to remove these stateful properties
-    private Vector2 lastAngle;
-    private float BurstCooldown = 0;
+    private Vector2 aimDirection;
+    private bool InCooldown = false;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Aim(Vector2 aimDirection)
     {
-        playerInput = GetComponent<PlayerInput>();
+        this.aimDirection = Vector2Utils.ClampMagnitude(aimDirection, 1, 1);
     }
 
-    void Update()
+    public void Fire()
     {
-        Vector2? aimAngle = playerInput.GetAimAngle();
-        if (aimAngle != null)
+        if (!InCooldown)
         {
-            lastAngle = aimAngle ?? Vector2.zero;
-            Fire();
+            StartCoroutine(FireBurst());
         }
-        DoCooldown();
-    }
-
-    private void DoCooldown()
-    {
-        if (BurstCooldown < 0)
-        {
-            BurstCooldown = 0;
-        }
-
-        if (BurstCooldown == 0)
-        {
-            return;
-        }
-
-        BurstCooldown -= Time.deltaTime;
-    }
-
-    private void Fire()
-    {
-        if (BurstCooldown > 0) return;
-        StartCoroutine(FireBurst());
-        BurstCooldown = (timeBetweenShots * shotsPerBurst) + timeBetweenBursts;
     }
 
     private IEnumerator FireBurst()
     {
+        InCooldown = true;
         for (int i = 0; i < shotsPerBurst; i++)
         {
             FiredShot shot = Instantiate(LaserShotPrefab);
             shot.transform.SetPositionAndRotation(transform.position, transform.rotation);
-            shot.Fire(ShotSpeed, lastAngle);
+            shot.Fire(ShotSpeed, aimDirection);
             yield return new WaitForSeconds(timeBetweenShots);
         }
+        StartCoroutine(Cooldown());
+        yield return null;
+    }
+
+    private IEnumerator Cooldown()
+    {
+        yield return new WaitForSeconds(timeBetweenBursts);
+        InCooldown = false;
         yield return null;
     }
 }

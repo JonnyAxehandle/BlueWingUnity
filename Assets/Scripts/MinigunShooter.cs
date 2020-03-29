@@ -19,12 +19,12 @@ public class MinigunShooter : MonoBehaviour
 
     void Update()
     {
-        Vector2? aimAngle = playerInput.GetAimAngle();
+        /*Vector2? aimAngle = playerInput.GetAimAngle();
         if (aimAngle != null)
         {
             Fire();
         }
-        DoCooldown();
+        DoCooldown();*/
     }
 
     private void Fire()

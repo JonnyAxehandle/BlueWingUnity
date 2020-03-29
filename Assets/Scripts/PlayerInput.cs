@@ -1,35 +1,44 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerInput : MonoBehaviour
 {
-    public static Vector2 ClampMagnitude(Vector2 v, float max, float min)
+    private void Update()
     {
-        double sm = v.sqrMagnitude;
-        if (sm > (double)max * (double)max) return v.normalized * max;
-        else if (sm < (double)min * (double)min) return v.normalized * min;
-        return v;
+        DoMovementInputKeyboard();
+        DoWeaponInputMouse();
     }
 
-    public Vector2? GetAimAngle()
+    private void DoMovementInputKeyboard()
     {
-        return GetJoystickAngle("HorizontalFire", "VerticalFire");
-    }
+        float x = 0,y = 0;
 
-    public Vector2? GetMovementAngle()
-    {
-        return GetJoystickAngle("Horizontal", "Vertical");
-    }
+        x += Input.GetKey(KeyCode.A) ? -1 : 0;
+        x += Input.GetKey(KeyCode.D) ? 1 : 0;
+        y += Input.GetKey(KeyCode.W) ? 1 : 0;
+        y += Input.GetKey(KeyCode.S) ? -1 : 0;
 
-    private Vector2? GetJoystickAngle(string xAxis, string yAxis)
-    {
-        Vector2 angle = new Vector2(Input.GetAxis(xAxis), Input.GetAxis(yAxis));
-        if (!(angle.x == 0 && angle.y == 0))
+        if (!(x == 0 && y == 0))
         {
-            return ClampMagnitude(angle, 1, 1);
+            ExecuteEvents.Execute<IMovementInputTarget>(
+                gameObject,
+                null,
+                (handler, data) => handler.Move(new Vector3(x, y, 0))
+                );
         }
-        return null;
+    }
+
+    private void DoWeaponInputMouse()
+    {
+        ExecuteEvents.Execute<IWeaponInputTarget>(
+                gameObject,
+                null,
+                (handler, data) => handler.Aim(Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position)
+                );
+
+        if (Input.GetMouseButton(0))
+        {
+            ExecuteEvents.Execute<IWeaponInputTarget>(gameObject, null, (handler, data) => handler.Fire() );
+        }
     }
 }
